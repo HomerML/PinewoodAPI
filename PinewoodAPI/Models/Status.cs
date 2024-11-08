@@ -6,5 +6,6 @@
         public string StatusDescription { get; set; } = "";
         public DateTime ModifiedDate { get; set; }
 
+        public ICollection<Customer> Customers { get; set; }
     }
 }

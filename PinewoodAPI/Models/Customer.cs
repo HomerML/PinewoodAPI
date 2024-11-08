@@ -1,4 +1,6 @@
-﻿namespace PinewoodAPI.Models
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+
+namespace PinewoodAPI.Models
 {
     public class Customer
     {
@@ -12,6 +14,6 @@
         public DateTime CreatedDate { get; set; }
         public DateTime ModifiedDate { get; set; }
         public int UpdatedBy { get; set; }
-
     }
+
 }

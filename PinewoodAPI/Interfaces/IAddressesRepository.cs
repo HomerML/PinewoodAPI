@@ -4,7 +4,9 @@ namespace PinewoodAPI.Interfaces
 {
     public interface IAddressesRepository
     {
-        ICollection<Address> GetAddresses();
+        ICollection<Address> GetAddresses(int id);
+
+        ICollection<AddressViewModel> GetAddressesList(int id);
 
         Address GetAddress(int id);
 

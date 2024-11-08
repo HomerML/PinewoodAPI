@@ -5,7 +5,7 @@ using PinewoodAPI.Repository;
 
 namespace PinewoodAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class ActivityController : Controller
     {
@@ -17,11 +17,24 @@ namespace PinewoodAPI.Controllers
         }
 
 
-        [HttpGet]
+        [HttpGet("{customerId}")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Activity>))]
-        public IActionResult GetActivities()
+        public IActionResult GetActivities(int customerId)
         {
-            var activities = _activitiesRepository.GetActivities();
+            var activities = _activitiesRepository.GetActivities(customerId);
+
+            if (!ModelState.IsValid)
+                return BadRequest(activities);
+
+            return Ok(activities);
+        }
+
+
+        [HttpGet("{customerId}")]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<ActivityViewModel>))]
+        public IActionResult GetActivitiesList(int customerId)
+        {
+            var activities = _activitiesRepository.GetActivitiesList(customerId);
 
             if (!ModelState.IsValid)
                 return BadRequest(activities);
@@ -55,15 +68,6 @@ namespace PinewoodAPI.Controllers
             if (CreateActivity == null)
                 return BadRequest(ModelState);
 
-            var contact = _activitiesRepository.GetActivities()
-                .Where(c => c.Notes.Trim().ToUpper() == activityCreate.Notes.TrimEnd().ToUpper())
-                .FirstOrDefault();
-
-            if (contact != null)
-            {
-                ModelState.AddModelError("", "Activity already exists");
-                return StatusCode(422, ModelState);
-            }
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);

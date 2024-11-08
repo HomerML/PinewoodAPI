@@ -5,7 +5,7 @@ using PinewoodAPI.Repository;
 
 namespace PinewoodAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class ContactController : Controller
     {
@@ -17,11 +17,32 @@ namespace PinewoodAPI.Controllers
         }
 
 
-        [HttpGet]
+        [HttpGet("{customerId}")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Contact>))]
-        public IActionResult GetContacts()
+        public IActionResult GetContacts(int customerId)
         {
-            var contacts = _contactsRepository.GetContacts();
+            if (!_contactsRepository.CustomerContactExists(customerId))
+                return NotFound();
+
+            var contacts = _contactsRepository.GetContacts(customerId);
+
+
+            if (!ModelState.IsValid)
+                return BadRequest(contacts);
+
+            return Ok(contacts);
+        }
+
+
+        [HttpGet("{customerId}")]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<ContactViewModel>))]
+        public IActionResult GetContactsList(int customerId)
+        {
+            if (!_contactsRepository.CustomerContactExists(customerId))
+                return NotFound();
+
+            var contacts = _contactsRepository.GetContactsList(customerId);
+
 
             if (!ModelState.IsValid)
                 return BadRequest(contacts);
@@ -55,15 +76,15 @@ namespace PinewoodAPI.Controllers
             if (CreateContact == null)
                 return BadRequest(ModelState);
 
-            var contact = _contactsRepository.GetContacts()
-                .Where(c => c.ContactDetail.Trim().ToUpper() == contactCreate.ContactDetail.TrimEnd().ToUpper())
-                .FirstOrDefault();
+            //var contact = _contactsRepository.GetContacts()
+            //    .Where(c => c.ContactDetail.Trim().ToUpper() == contactCreate.ContactDetail.TrimEnd().ToUpper())
+            //    .FirstOrDefault();
 
-            if (contact != null)
-            {
-                ModelState.AddModelError("", "Contact already exists");
-                return StatusCode(422, ModelState);
-            }
+            //if (contact != null)
+            //{
+            //    ModelState.AddModelError("", "Contact already exists");
+            //    return StatusCode(422, ModelState);
+            //}
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);

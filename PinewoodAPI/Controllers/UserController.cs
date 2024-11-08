@@ -5,7 +5,7 @@ using PinewoodAPI.Repository;
 
 namespace PinewoodAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class UserController : Controller
     {

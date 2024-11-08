@@ -5,7 +5,7 @@ using PinewoodAPI.Repository;
 
 namespace PinewoodAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class AddressController : Controller
     {
@@ -17,11 +17,28 @@ namespace PinewoodAPI.Controllers
         }
 
 
-        [HttpGet]
+        [HttpGet("{customerId}")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Address>))]
-        public IActionResult GetAddresses()
+        public IActionResult GetAddresses(int customerId)
         {
-            var addresses = _addressesRepository.GetAddresses();
+            var addresses = _addressesRepository.GetAddresses(customerId);
+
+            if (!ModelState.IsValid)
+                return BadRequest(addresses);
+
+            return Ok(addresses);
+        }
+
+
+        [HttpGet("{customerId}")]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<AddressViewModel>))]
+        public IActionResult GetAddressesList(int customerId)
+        {
+            if (!_addressesRepository.AddressExists(customerId))
+                return NotFound();
+
+            var addresses = _addressesRepository.GetAddressesList(customerId);
+
 
             if (!ModelState.IsValid)
                 return BadRequest(addresses);
@@ -55,15 +72,15 @@ namespace PinewoodAPI.Controllers
             if (CreateAddress == null)
                 return BadRequest(ModelState);
 
-            var address = _addressesRepository.GetAddresses()
-                .Where(c => c.AddressLine1.Trim().ToUpper() == addressCreate.AddressLine1.TrimEnd().ToUpper())
-                .FirstOrDefault();
+            //var address = _addressesRepository.GetAddresses()
+            //    .Where(c => c.AddressLine1.Trim().ToUpper() == addressCreate.AddressLine1.TrimEnd().ToUpper())
+            //    .FirstOrDefault();
 
-            if (address != null)
-            {
-                ModelState.AddModelError("", "Address already exists");
-                return StatusCode(422, ModelState);
-            }
+            //if (address != null)
+            //{
+            //    ModelState.AddModelError("", "Address already exists");
+            //    return StatusCode(422, ModelState);
+            //}
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);

@@ -4,7 +4,9 @@ namespace PinewoodAPI.Interfaces
 {
     public interface IActivitiesRepository
     {
-        ICollection<Activity> GetActivities();
+        ICollection<Activity> GetActivities(int id);
+
+        ICollection<ActivityViewModel> GetActivitiesList(int id);
 
         Activity GetActivity(int id);
 

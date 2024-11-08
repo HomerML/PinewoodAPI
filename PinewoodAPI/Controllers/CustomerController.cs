@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using PinewoodAPI.Interfaces;
 using PinewoodAPI.Models;
 using PinewoodAPI.Repository;
@@ -10,11 +12,16 @@ namespace WebPinewoodAPIApplication2.Controllers
     public class CustomerController : Controller
     {
         private ICustomersRepository _customersRepository;
+        private ITitlesRepository _titlesRepository;
+        private IStatusesRepository _statusesRepository;
 
-        public CustomerController(ICustomersRepository customersRepository)
+        public CustomerController(ICustomersRepository customersRepository, ITitlesRepository titlesRepository, IStatusesRepository statusesRepository)
         {
             _customersRepository = customersRepository;
+            _titlesRepository = titlesRepository;
+            _statusesRepository = statusesRepository;
         }
+
 
 
         [HttpGet]
@@ -31,7 +38,7 @@ namespace WebPinewoodAPIApplication2.Controllers
 
 
         [HttpGet("{customerId}")]
-        [ProducesResponseType(200, Type = typeof(Activity))]
+        [ProducesResponseType(200, Type = typeof(Customer))]
         [ProducesResponseType(400)]
         public IActionResult GetCustomer(int customerId)
         {
@@ -80,7 +87,7 @@ namespace WebPinewoodAPIApplication2.Controllers
         }
 
 
-        [HttpPut("{customerId}")]
+        [HttpPost("{customerId}")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]

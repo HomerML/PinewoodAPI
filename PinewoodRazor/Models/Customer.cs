@@ -1,4 +1,6 @@
-﻿namespace PinewoodRazor.Models
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+
+namespace PinewoodRazor.Models
 {
     public class Customer
     {
@@ -12,6 +14,23 @@
         public DateTime CreatedDate { get; set; }
         public DateTime ModifiedDate { get; set; }
         public int UpdatedBy { get; set; }
+    }
 
+
+    public class CustomerViewModel
+    {
+        public Customer Customer { get; set; }
+        public Contact Contact { get; set; }
+        public Address Address { get; set; }
+        public Activity Activity { get; set; }
+        public IEnumerable<SelectListItem> TitleList { get; set; }
+        public IEnumerable<SelectListItem> StatusList { get; set; }
+        public ICollection<ContactViewModel> ContactList { get; set; }
+        public ICollection<AddressViewModel> AddressList { get; set; }
+        public ICollection<ActivityViewModel> ActivityList { get; set; }
+
+        public ContactViewModel ContactViewModel { get; set; }
+        public AddressViewModel AddressViewModel { get; set; }
+        public ActivityViewModel ActivityViewModel { get; set; }
     }
 }

@@ -7,5 +7,7 @@
         public int StatusId { get; set; }
         public DateTime ModifiedDate { get; set; }
         public int UpdatedBy { get; set; }
+
+        public ICollection<Customer> Customers { get; set; }
     }
 }

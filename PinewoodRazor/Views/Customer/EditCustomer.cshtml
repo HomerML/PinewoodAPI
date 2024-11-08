@@ -1,0 +1,278 @@
+﻿@model PinewoodRazor.Models.CustomerViewModel
+
+@{
+    ViewData["Title"] = "EditCustomer";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Customer Details</h1>
+
+<div>
+    <h4>Customer</h4>
+    <hr />
+
+    <div style="display: flex;">
+        <div style="flex: 1; padding: 10px;">
+
+            @using (Html.BeginForm("SaveCustomer", "Customer", FormMethod.Post))
+            {
+                <Table>
+                    <tr>
+                        <td style="width:170px; font-weight:800;">
+                            @Html.DisplayNameFor(model => model.Customer.CustomerId)
+                        </td>
+                        <td style="width:200px">
+                            @Html.DisplayFor(model => model.Customer.CustomerId)
+                            @Html.HiddenFor(model => model.Customer.CustomerId)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight:800;">
+                            @Html.DisplayNameFor(model => model.Customer.TitleId)
+                        </td>
+                        <td>
+                            @Html.DropDownListFor(model => model.Customer.TitleId, Model.TitleList, "Select Title")
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight:800;">
+                            @Html.DisplayNameFor(model => model.Customer.FirstName)
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(model => model.Customer.FirstName)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight:800;">
+                            @Html.DisplayNameFor(model => model.Customer.LastName)
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(model => model.Customer.LastName)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight:800;">
+                            @Html.DisplayNameFor(model => model.Customer.KnownAs)
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(model => model.Customer.KnownAs)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight:800;">
+                            @Html.DisplayNameFor(model => model.Customer.BirthDate)
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(model => model.Customer.BirthDate)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight:800;">
+                            @Html.DisplayNameFor(model => model.Customer.StatusId)
+                        </td>
+                        <td>
+                            @Html.DropDownListFor(model => model.Customer.StatusId, Model.StatusList)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight:800;">
+                            @Html.DisplayNameFor(model => model.Customer.CreatedDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => model.Customer.CreatedDate)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight:800;">
+                            @Html.DisplayNameFor(model => model.Customer.ModifiedDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => model.Customer.ModifiedDate)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight:800;">
+                            @Html.DisplayNameFor(model => model.Customer.UpdatedBy)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => model.Customer.UpdatedBy)
+                        </td>
+                    </tr>
+                </Table>
+                <br />
+                <input type="submit" value="Save" class="btn btn-secondary" />
+            }
+                    
+            @Html.ActionLink("Back to List", "Index", new { /* id = Model.PrimaryKey */ }) 
+        </div>
+
+
+        <div style="flex: 2; padding: 10px;">
+            <div class="container mt-3">
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="tab1-tab" data-bs-toggle="tab" data-bs-target="#tab1" type="button" role="tab" aria-controls="tab1" aria-selected="true">
+                            <h4>Contacts</h4>
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="tab2-tab" data-bs-toggle="tab" data-bs-target="#tab2" type="button" role="tab" aria-controls="tab2" aria-selected="false">
+                            <h4>Addresses</h4>
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="tab3-tab" data-bs-toggle="tab" data-bs-target="#tab3" type="button" role="tab" aria-controls="tab3" aria-selected="false">
+                            <h4>Activity</h4>
+                        </button>
+                    </li>
+                </ul>
+             
+                <!-- Tab content -->
+                <div class="tab-content mt-3" id="myTabContent">
+                    <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.ContactViewModel.ContactDescription)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.ContactViewModel.Description)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.ContactViewModel.ContactDetail)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.ContactViewModel.MarketingAllowed)
+                                    </th>                              
+                                    <th></th>
+                                </tr>
+                            </thead>
+                        <tbody>
+                    @foreach (var item in Model.ContactList) {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ContactDescription)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Description)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ContactDetail)
+                                </td>
+                                <td>
+                                    @Html.CheckBoxFor(modelItem => item.MarketingAllowed)
+                                </td>
+                                <td>
+                                    @Html.ActionLink("Edit", "EditCustomer", new { id=item.CustomerId })                  
+                                </td>
+                            </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="tab-pane fade" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">                        
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.AddressViewModel.AddressDescription)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.AddressViewModel.AddressLine1)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.AddressViewModel.Town)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.AddressViewModel.County)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.AddressViewModel.PostCode)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.AddressViewModel.MarketingAllowed)
+                                    </th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.AddressList)
+                                {
+                                    <tr>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.AddressDescription)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.AddressLine1)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Town)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.County)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.PostCode)
+                                        </td>
+                                        <td>
+                                            @Html.CheckBoxFor(modelItem => item.MarketingAllowed)
+                                        </td>
+                                        <td>
+                                            @Html.ActionLink("Edit", "EditCustomer", new { id = item.AddressId }) 
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="tab-pane fade" id="tab3" role="tabpanel" aria-labelledby="tab3-tab">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.ActivityViewModel.EventDescription)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.ActivityViewModel.ActivityDate)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.ActivityViewModel.Notes)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.ActivityViewModel.UpdatedBy)
+                                    </th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.ActivityList)
+                                {
+                                    <tr>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.EventDescription)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.ActivityDate)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Notes)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.UpdatedBy)
+                                        </td>
+                                        <td>
+                                            @Html.ActionLink("Edit", "EditCustomer", new { id = item.ActivityId }) |
+                                            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

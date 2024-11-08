@@ -1,6 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using PinewoodAPI.Data;
+using PinewoodAPI.Migrations;
 using PinewoodAPI.Models;
+using System.Configuration;
+using System.Data.Entity;
+using System.Data.Entity.Migrations;
+using System.Reflection;
 
 namespace PinewoodAPI
 {
@@ -10,15 +16,17 @@ namespace PinewoodAPI
 
         public Seed(DataContext context)
         {
-            this._context = context;
+            _context = context;
         }
 
-
-        public void SeedDataContext(DataContext dataContext)
+        public void SeedDataContext()
         {
+            _context.Database.Migrate();
+
+
             if (!_context.Statuses.Any())
             {
-                using (var transaction = dataContext.Database.BeginTransaction())
+                using (var transaction = _context.Database.BeginTransaction())
                 {
                     var status = new List<Status>()
                     {
@@ -26,22 +34,22 @@ namespace PinewoodAPI
                         {
                             StatusId = 1,
                             StatusDescription = "Active",
-                            ModifiedDate = DateTime.Now
+                            ModifiedDate = DateTime.UtcNow
                         },
                         new Status()
                         {
                             StatusId = 2,
                             StatusDescription = "Disabled",
-                            ModifiedDate = DateTime.Now
+                            ModifiedDate = DateTime.UtcNow
                         }
                     };
 
-                    dataContext.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Statuses ON");
+                    _context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Statuses ON");
 
-                    dataContext.Statuses.AddRange(status);
-                    dataContext.SaveChanges();
+                    _context.Statuses.AddRange(status);
+                    _context.SaveChanges();
 
-                    dataContext.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Statuses OFF");
+                    _context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Statuses OFF");
 
                     transaction.Commit();
                 }
@@ -50,7 +58,7 @@ namespace PinewoodAPI
 
             if (!_context.Users.Any())
             {
-                using (var transaction = dataContext.Database.BeginTransaction())
+                using (var transaction = _context.Database.BeginTransaction())
                 {
                     var user = new List<User>()
                     {
@@ -60,8 +68,8 @@ namespace PinewoodAPI
                             FirstName = "Matthew",
                             LastName = "Homer",
                             StatusId = 1,
-                            CreatedDate = DateTime.Now,
-                            ModifiedDate = DateTime.Now
+                            CreatedDate = DateTime.UtcNow,
+                            ModifiedDate = DateTime.UtcNow
                         },
                         new User()
                         {
@@ -69,17 +77,17 @@ namespace PinewoodAPI
                             FirstName = "Otto",
                             LastName = "Mann",
                             StatusId = 1,
-                            CreatedDate = DateTime.Now,
-                            ModifiedDate = DateTime.Now
+                            CreatedDate = DateTime.UtcNow,
+                            ModifiedDate = DateTime.UtcNow
                         }
                     };
 
-                    dataContext.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Users ON");
+                    _context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Users ON");
 
-                    dataContext.Users.AddRange(user);
-                    dataContext.SaveChanges();
+                    _context.Users.AddRange(user);
+                    _context.SaveChanges();
 
-                    dataContext.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Users OFF");
+                    _context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Users OFF");
 
                     transaction.Commit();
                 }
@@ -88,7 +96,7 @@ namespace PinewoodAPI
 
             if (!_context.Titles.Any())
             {
-                using (var transaction = dataContext.Database.BeginTransaction())
+                using (var transaction = _context.Database.BeginTransaction())
                 {
                     var title = new List<Title>()
                     {
@@ -97,7 +105,7 @@ namespace PinewoodAPI
                             TitleId = 1,
                             TitleDescription = "Mr",
                             StatusId = 1,
-                            ModifiedDate = DateTime.Now,
+                            ModifiedDate = DateTime.UtcNow,
                             UpdatedBy = 1
                         },
                         new Title()
@@ -105,7 +113,7 @@ namespace PinewoodAPI
                             TitleId = 2,
                             TitleDescription = "Mrs",
                             StatusId = 1,
-                            ModifiedDate = DateTime.Now,
+                            ModifiedDate = DateTime.UtcNow,
                             UpdatedBy = 1
                         },
                         new Title()
@@ -113,7 +121,7 @@ namespace PinewoodAPI
                             TitleId = 3,
                             TitleDescription = "Miss",
                             StatusId = 1,
-                            ModifiedDate = DateTime.Now,
+                            ModifiedDate = DateTime.UtcNow,
                             UpdatedBy = 1
                         },
                         new Title()
@@ -121,7 +129,7 @@ namespace PinewoodAPI
                             TitleId = 4,
                             TitleDescription = "Dr",
                             StatusId = 1,
-                            ModifiedDate = DateTime.Now,
+                            ModifiedDate = DateTime.UtcNow,
                             UpdatedBy = 1
                         },
                         new Title()
@@ -129,17 +137,17 @@ namespace PinewoodAPI
                             TitleId = 5,
                             TitleDescription = "Prefer Not To Say",
                             StatusId = 1,
-                            ModifiedDate = DateTime.Now,
+                            ModifiedDate = DateTime.UtcNow,
                             UpdatedBy = 1
                         }
                     };
 
-                    dataContext.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Titles ON");
+                    _context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Titles ON");
 
-                    dataContext.Titles.AddRange(title);
-                    dataContext.SaveChanges();
+                    _context.Titles.AddRange(title);
+                    _context.SaveChanges();
 
-                    dataContext.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Titles OFF");
+                    _context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Titles OFF");
 
                     transaction.Commit();
                 }
@@ -148,7 +156,7 @@ namespace PinewoodAPI
 
             if (!_context.EventTypes.Any())
             {
-                using (var transaction = dataContext.Database.BeginTransaction())
+                using (var transaction = _context.Database.BeginTransaction())
                 {
                     var eventTypes = new List<EventType>()
                     {
@@ -157,7 +165,7 @@ namespace PinewoodAPI
                             EventTypeId = 1,
                             EventDescription = "Email Sent",
                             StatusId = 1,
-                            ModifiedDate = DateTime.Now,
+                            ModifiedDate = DateTime.UtcNow,
                             UpdatedBy = 1
                         },
                         new EventType()
@@ -165,7 +173,7 @@ namespace PinewoodAPI
                             EventTypeId = 2,
                             EventDescription = "Email Received",
                             StatusId = 1,
-                            ModifiedDate = DateTime.Now,
+                            ModifiedDate = DateTime.UtcNow,
                             UpdatedBy = 1
                         },
                         new EventType()
@@ -173,7 +181,7 @@ namespace PinewoodAPI
                             EventTypeId = 3,
                             EventDescription = "Phone Call Made",
                             StatusId = 1,
-                            ModifiedDate = DateTime.Now,
+                            ModifiedDate = DateTime.UtcNow,
                             UpdatedBy = 1
                         },
                         new EventType()
@@ -181,17 +189,17 @@ namespace PinewoodAPI
                             EventTypeId = 4,
                             EventDescription = "Phone Call Received",
                             StatusId = 1,
-                            ModifiedDate = DateTime.Now,
+                            ModifiedDate = DateTime.UtcNow,
                             UpdatedBy = 1
                         }
                     };
 
-                    dataContext.Database.ExecuteSqlRaw("SET IDENTITY_INSERT EventTypes ON");
+                    _context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT EventTypes ON");
 
-                    dataContext.EventTypes.AddRange(eventTypes);
-                    dataContext.SaveChanges();
+                    _context.EventTypes.AddRange(eventTypes);
+                    _context.SaveChanges();
 
-                    dataContext.Database.ExecuteSqlRaw("SET IDENTITY_INSERT EventTypes OFF");
+                    _context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT EventTypes OFF");
 
                     transaction.Commit();
                 }
@@ -200,7 +208,7 @@ namespace PinewoodAPI
 
             if (!_context.Customers.Any())
             {
-                using (var transaction = dataContext.Database.BeginTransaction())
+                using (var transaction = _context.Database.BeginTransaction())
                 {
                     var customers = new List<Customer>()
                     {
@@ -213,8 +221,8 @@ namespace PinewoodAPI
                             KnownAs = "Homer",
                             BirthDate = new DateTime(1956, 5, 12),
                             StatusId = 1,
-                            CreatedDate = DateTime.Now,
-                            ModifiedDate = DateTime.Now,
+                            CreatedDate = DateTime.UtcNow,
+                            ModifiedDate = DateTime.UtcNow,
                             UpdatedBy = 1
                         },
                         new Customer()
@@ -226,18 +234,18 @@ namespace PinewoodAPI
                             KnownAs = "Seymour",
                             BirthDate = new DateTime(1944, 7, 12),
                             StatusId = 1,
-                            CreatedDate = DateTime.Now,
-                            ModifiedDate = DateTime.Now,
+                            CreatedDate = DateTime.UtcNow,
+                            ModifiedDate = DateTime.UtcNow,
                             UpdatedBy = 1
                         }
                     };
 
-                    dataContext.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Customers ON");
+                    _context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Customers ON");
 
-                    dataContext.Customers.AddRange(customers);
-                    dataContext.SaveChanges();
+                    _context.Customers.AddRange(customers);
+                    _context.SaveChanges();
 
-                    dataContext.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Customers OFF");
+                    _context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Customers OFF");
 
                     transaction.Commit();
                 }
@@ -246,7 +254,7 @@ namespace PinewoodAPI
 
             if (!_context.ContactTypes.Any())
             {
-                using (var transaction = dataContext.Database.BeginTransaction())
+                using (var transaction = _context.Database.BeginTransaction())
                 {
                     var contactTypes = new List<ContactType>()
                     {
@@ -255,7 +263,7 @@ namespace PinewoodAPI
                             ContactTypeId = 1,
                             ContactDescription = "Mobile",
                             StatusId = 1,
-                            ModifiedDate = DateTime.Now,
+                            ModifiedDate = DateTime.UtcNow,
                             UpdatedBy = 1
                         },
                         new ContactType
@@ -263,17 +271,17 @@ namespace PinewoodAPI
                             ContactTypeId = 2,
                             ContactDescription = "email",
                             StatusId = 1,
-                            ModifiedDate = DateTime.Now,
+                            ModifiedDate = DateTime.UtcNow,
                             UpdatedBy = 1
                         }
                     };
 
-                    dataContext.Database.ExecuteSqlRaw("SET IDENTITY_INSERT ContactTypes ON");
+                    _context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT ContactTypes ON");
 
-                    dataContext.ContactTypes.AddRange(contactTypes);
-                    dataContext.SaveChanges();
+                    _context.ContactTypes.AddRange(contactTypes);
+                    _context.SaveChanges();
 
-                    dataContext.Database.ExecuteSqlRaw("SET IDENTITY_INSERT ContactTypes OFF");
+                    _context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT ContactTypes OFF");
 
                     transaction.Commit();
                 }
@@ -282,7 +290,7 @@ namespace PinewoodAPI
 
             if (!_context.Contacts.Any())
             {
-                using (var transaction = dataContext.Database.BeginTransaction())
+                using (var transaction = _context.Database.BeginTransaction())
                 {
                     var contacts = new List<Contact>()
                     {
@@ -295,8 +303,8 @@ namespace PinewoodAPI
                             Description = "Main Contact",
                             MarketingAllowed = true,
                             StatusId = 1,
-                            CreatedDate = DateTime.Now,
-                            ModifiedDate = DateTime.Now,
+                            CreatedDate = DateTime.UtcNow,
+                            ModifiedDate = DateTime.UtcNow,
                             UpdatedBy = 1
                         },
                         new Contact
@@ -308,8 +316,8 @@ namespace PinewoodAPI
                             Description = "Main Contact",
                             MarketingAllowed = true,
                             StatusId = 1,
-                            CreatedDate = DateTime.Now,
-                            ModifiedDate = DateTime.Now,
+                            CreatedDate = DateTime.UtcNow,
+                            ModifiedDate = DateTime.UtcNow,
                             UpdatedBy = 1
                         },
                         new Contact
@@ -321,8 +329,8 @@ namespace PinewoodAPI
                             Description = "School Mobile",
                             MarketingAllowed = true,
                             StatusId = 1,
-                            CreatedDate = DateTime.Now,
-                            ModifiedDate = DateTime.Now,
+                            CreatedDate = DateTime.UtcNow,
+                            ModifiedDate = DateTime.UtcNow,
                             UpdatedBy = 1
                         },
                         new Contact
@@ -334,18 +342,18 @@ namespace PinewoodAPI
                             Description = "Personal School contact",
                             MarketingAllowed = true,
                             StatusId = 1,
-                            CreatedDate = DateTime.Now,
-                            ModifiedDate = DateTime.Now,
+                            CreatedDate = DateTime.UtcNow,
+                            ModifiedDate = DateTime.UtcNow,
                             UpdatedBy = 1
                         }
                     };
 
-                    dataContext.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Contacts ON");
+                    _context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Contacts ON");
 
-                    dataContext.Contacts.AddRange(contacts);
-                    dataContext.SaveChanges();
+                    _context.Contacts.AddRange(contacts);
+                    _context.SaveChanges();
 
-                    dataContext.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Contacts OFF");
+                    _context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Contacts OFF");
 
                     transaction.Commit();
                 }
@@ -354,7 +362,7 @@ namespace PinewoodAPI
 
             if (!_context.AddressTypes.Any())
             {
-                using (var transaction = dataContext.Database.BeginTransaction())
+                using (var transaction = _context.Database.BeginTransaction())
                 {
                     var addressTypes = new List<AddressType>()
                     {
@@ -363,7 +371,7 @@ namespace PinewoodAPI
                             AddressTypeId = 1,
                             AddressDescription = "Home Address",
                             StatusId =  1,
-                            ModifiedDate = new DateTime(),
+                            ModifiedDate = DateTime.UtcNow,
                             UpdatedBy = 1
                         },
                         new AddressType
@@ -371,17 +379,17 @@ namespace PinewoodAPI
                             AddressTypeId = 2,
                             AddressDescription = "Business Address",
                             StatusId = 1,
-                            ModifiedDate = new DateTime(),
+                            ModifiedDate = DateTime.UtcNow,
                             UpdatedBy = 1
                         }
                     };
 
-                    dataContext.Database.ExecuteSqlRaw("SET IDENTITY_INSERT AddressTypes ON");
+                    _context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT AddressTypes ON");
 
-                    dataContext.AddressTypes.AddRange(addressTypes);
-                    dataContext.SaveChanges();
+                    _context.AddressTypes.AddRange(addressTypes);
+                    _context.SaveChanges();
 
-                    dataContext.Database.ExecuteSqlRaw("SET IDENTITY_INSERT AddressTypes OFF");
+                    _context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT AddressTypes OFF");
 
                     transaction.Commit();
                 }
@@ -390,7 +398,7 @@ namespace PinewoodAPI
 
             if (!_context.Addresses.Any())
             {
-                using (var transaction = dataContext.Database.BeginTransaction())
+                using (var transaction = _context.Database.BeginTransaction())
                 {
                     var addresses = new List<Address>()
                     {
@@ -405,8 +413,8 @@ namespace PinewoodAPI
                             PostCode = "80085",
                             MarketingAllowed = true,
                             StatusId = 1,
-                            CreatedDate = new DateTime(),
-                            ModifiedDate = new DateTime(),
+                            CreatedDate = DateTime.UtcNow,
+                            ModifiedDate = DateTime.UtcNow,
                             UpdatedBy = 1
                         },
                         new Address
@@ -421,18 +429,18 @@ namespace PinewoodAPI
                             PostCode = "80086",
                             MarketingAllowed = true,
                             StatusId = 1,
-                            CreatedDate = new DateTime(),
-                            ModifiedDate = new DateTime(),
+                            CreatedDate = DateTime.UtcNow,
+                            ModifiedDate = DateTime.UtcNow,
                             UpdatedBy = 1
                         }
                     };
 
-                    dataContext.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Addresses ON");
+                    _context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Addresses ON");
 
-                    dataContext.Addresses.AddRange(addresses);
-                    dataContext.SaveChanges();
+                    _context.Addresses.AddRange(addresses);
+                    _context.SaveChanges();
 
-                    dataContext.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Addresses OFF");
+                    _context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Addresses OFF");
 
                     transaction.Commit();
                 }
@@ -441,7 +449,7 @@ namespace PinewoodAPI
 
             if (!_context.Activities.Any())
             {
-                using (var transaction = dataContext.Database.BeginTransaction())
+                using (var transaction = _context.Database.BeginTransaction())
                 {
                     var activities = new List<Activity>()
                     {
@@ -450,10 +458,10 @@ namespace PinewoodAPI
                             ActivityId = 1,
                             CustomerId = 1,
                             EventTypeId = 4,
-                            ActivityDate = new DateTime(),
+                            ActivityDate = DateTime.UtcNow,
                             Notes = "Wants Info about new Estate Car",
                             StatusId = 1,
-                            ModifiedDate = DateTime.Now,
+                            ModifiedDate = DateTime.UtcNow,
                             UpdatedBy = 1
                         },
                         new Activity
@@ -461,10 +469,10 @@ namespace PinewoodAPI
                             ActivityId = 2,
                             CustomerId = 1,
                             EventTypeId = 3,
-                            ActivityDate = new DateTime(),
+                            ActivityDate = DateTime.UtcNow,
                             Notes = "No answer, send info",
                             StatusId = 1,
-                            ModifiedDate = DateTime.Now,
+                            ModifiedDate = DateTime.UtcNow,
                             UpdatedBy = 2
                         },
                         new Activity
@@ -472,10 +480,10 @@ namespace PinewoodAPI
                             ActivityId = 3,
                             CustomerId = 1,
                             EventTypeId = 1,
-                            ActivityDate = new DateTime(),
+                            ActivityDate = DateTime.UtcNow,
                             Notes = "Sent email of available cars",
                             StatusId = 1,
-                            ModifiedDate = DateTime.Now,
+                            ModifiedDate = DateTime.UtcNow,
                             UpdatedBy = 2
                         },
                         new Activity
@@ -483,10 +491,10 @@ namespace PinewoodAPI
                             ActivityId = 4,
                             CustomerId = 2,
                             EventTypeId = 4,
-                            ActivityDate = new DateTime(),
+                            ActivityDate = DateTime.UtcNow,
                             Notes = "Wants another minibus",
                             StatusId = 1,
-                            ModifiedDate = DateTime.Now,
+                            ModifiedDate = DateTime.UtcNow,
                             UpdatedBy = 2
                         },
                         new Activity
@@ -494,20 +502,20 @@ namespace PinewoodAPI
                             ActivityId = 5,
                             CustomerId = 2,
                             EventTypeId = 1,
-                            ActivityDate = new DateTime(),
+                            ActivityDate = DateTime.UtcNow,
                             Notes = "Sent email of Minibus details",
                             StatusId = 1,
-                            ModifiedDate = DateTime.Now,
+                            ModifiedDate = DateTime.UtcNow,
                             UpdatedBy = 1
                         }
                     };
 
-                    dataContext.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Activities ON");
+                    _context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Activities ON");
 
-                    dataContext.Activities.AddRange(activities);
-                    dataContext.SaveChanges();
+                    _context.Activities.AddRange(activities);
+                    _context.SaveChanges();
 
-                    dataContext.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Activities OFF");
+                    _context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Activities OFF");
 
                     transaction.Commit();
                 }

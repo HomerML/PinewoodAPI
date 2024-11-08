@@ -1,4 +1,6 @@
-﻿namespace PinewoodRazor.Models
+﻿using System.ComponentModel;
+
+namespace PinewoodRazor.Models
 {
     public class Address
     {
@@ -17,5 +19,17 @@
         public DateTime CreatedDate { get; set; }
         public DateTime ModifiedDate { get; set; }
         public int UpdatedBy { get; set; }
+    }
+
+    public class AddressViewModel
+    {
+        public int AddressId { get; set; }
+        [DisplayName("AddressDescription")]
+        public string? AddressDescription { get; set; }
+        public string? AddressLine1 { get; set; }
+        public string? Town { get; set; }
+        public string? County { get; set; }
+        public string? PostCode { get; set; }
+        public Boolean MarketingAllowed { get; set; }
     }
 }
